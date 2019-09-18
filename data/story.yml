@@ -1,0 +1,19 @@
+---
+story:
+  - path: ["greet", "search_genre", "goodbye"]
+  - path: ["greet", "search_cast", "goodbye"]
+  - path: ["greet", "search_crew", "goodbye"]
+  - path: ["greet", "search_company", "goodbye"]
+  - path: ["greet", "search_genre", "search_cast", "goodbye"]
+  - path: ["greet", "search_genre", "search_crew", "goodbye"]
+  - path: ["greet", "search_genre", "search_company", "goodbye"]
+  - path: ["greet", "search_cast", "search_genre", "goodbye"]
+  - path: ["greet", "search_cast", "search_crew", "goodbye"]
+  - path: ["greet", "search_cast", "search_company", "goodbye"]
+  - path: ["greet", "search_crew", "search_genre", "goodbye"]
+  - path: ["greet", "search_crew", "search_cast", "goodbye"]
+  - path: ["greet", "search_crew", "search_company", "goodbye"]
+  - path: ["greet", "search_company", "search_genre", "goodbye"]
+  - path: ["greet", "search_company", "search_cast", "goodbye"]
+  - path: ["greet", "search_company", "search_crew", "goodbye"]
+

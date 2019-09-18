@@ -1,0 +1,13 @@
+utterances:
+  - state: "greet"
+    utterance: "Hey! What kind of movies do you want?"
+  - state: "search_genre"
+    utterance: "Here are some {genre} movies you would enjoy!"
+  - state: "search_cast"
+    utterance: "Here are some movies starring {cast}!"
+  - state: "search_crew"
+    utterance: "I got some movies directed by {crew}."
+  - state: "search_company"
+    utterance: "These are movies produced by {company}."
+  - state: "goodbye"
+    utterance: "Bye"
