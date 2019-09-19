@@ -1,5 +1,6 @@
 package com.jyoon.tmdbbot.parsers;
 
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -11,32 +12,55 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Slf4j
 @Component
 public class UtteranceParser {
     @Value("${utterancepath:data/utterances.yml}")
-    private String path;
+    private String filePath;
 
-    private File utterancesFile;
+    private UtterancesYamlDTO dto;
+
+    @Getter
+    private Map<String, String> utterances = new HashMap<>();
+    @Getter
+    private Map<String, String> slots = new HashMap<>();
+
 
     public void parse() {
-        File storyFile = new File(path);
-        Constructor yamlConstructor = new Constructor(UtteranceParser.class);
-        Yaml storyYaml = new Yaml(yamlConstructor);
-        UtterancesYamlDTO dto = null;
+        File utterancesFile = new File(filePath);
+        Constructor yamlConstructor = new Constructor(UtterancesYamlDTO.class);
+        Yaml utterancesYaml = new Yaml(yamlConstructor);
         try {
-            dto = storyYaml.load(new FileInputStream(storyFile));
+            dto = utterancesYaml.load(new FileInputStream(utterancesFile));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
+
+        if (dto != null){
+            for (UtteranceYamlDTO utterance : dto.utterances){
+                String utterText = utterance.utterance;
+
+                addUtterance(utterance.state, utterText);
+                findSlot(utterText);
+            }
+        }
     }
 
-    public Map<String, String> getUtterances(){
-        return new HashMap<>();
+    private void addUtterance(String state, String utterText){
+        utterances.put(state, utterText);
     }
 
-    public Map<String, String> getSlots(){
-        return new HashMap<>();
+    void findSlot(String utterText){
+        String slotRegex = "\\{(.*?)\\}";
+        Pattern slotPattern = Pattern.compile(slotRegex);
+        Matcher slotMatcher = slotPattern.matcher(utterText);
+        while (slotMatcher.find()){
+            String slotName = slotMatcher.group(1);
+            log.debug("slot found: {}", slotName);
+            slots.put(slotName, "");
+        }
     }
 }

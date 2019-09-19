@@ -1,5 +1,6 @@
-package com.jyoon.tmdbbot;
+package com.jyoon.tmdbbot.parsers;
 
+import com.jyoon.tmdbbot.TestConfig;
 import com.jyoon.tmdbbot.engine.Entity;
 import com.jyoon.tmdbbot.parsers.EntityParser;
 import com.jyoon.tmdbbot.repository.EntityRepository;

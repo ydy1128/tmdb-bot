@@ -26,8 +26,7 @@ public class StateMachineFactory {
     }
 
     public StateMachine instansiate(String sessionId){
-        // validate session
-        // maybe change it to aop? --> brainstorm
+        // validate session - maybe change it to aop? --> brainstorm
         StateMachine stateMachine = new StateMachine();
         stateMachine.setRoot("greet");
         stateMachine.setStates(storyParser.getStates());

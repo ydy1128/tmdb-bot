@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
@@ -43,18 +42,26 @@ public class EntityParser {
             while (scanner.hasNextLine()){
                 String line = scanner.nextLine();
                 if (line.startsWith("##")){
-                    String[] lineSplitted = line.split("lookup:");
-                    currentType = lineSplitted[1].replace("\n", "");
+                    currentType = getCurrentType(line);
                 }
                 else if (line.startsWith("-")){
-                    String entityString = line.replace("- ", "").replace("\n", "");
-                    Entity entity = new Entity(currentType, entityString);
-                    log.debug("saving entity: {}",entity);
-                    entityRepository.save(entity);
+                    saveEntity(line, currentType);
                 }
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
+    }
+
+    String getCurrentType(String line){
+        String[] lineSplitted = line.split("lookup:");
+        return lineSplitted[1].replace("\n", "");
+    }
+
+    void saveEntity(String line, String currentType){
+        String entityString = line.replace("- ", "").replace("\n", "");
+        Entity entity = new Entity(currentType, entityString);
+        log.debug("saving entity: {}",entity);
+        entityRepository.save(entity);
     }
 }
