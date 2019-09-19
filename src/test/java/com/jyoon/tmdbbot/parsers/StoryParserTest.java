@@ -9,21 +9,16 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import static org.junit.Assert.*;
-import org.hamcrest.collection.IsMapContaining;
-//import org.hamcrest.collection.*;
 import org.hamcrest.collection.IsIn;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = TestConfig.class)
-public class StateMachineFactoryTest {
+public class StoryParserTest {
     @Autowired
     StoryParser storyParser;
 
-    @Autowired
-    UtteranceParser utteranceParser;
-
     @Test
-    public void testAddState(){
+    public void testAddState() {
         storyParser.addState(new State("greet"), new State("search_genre"));
         storyParser.addState(new State("greet"), new State("search_cast"));
         storyParser.addState(new State("search_genre"), new State("search_cast"));
@@ -36,27 +31,11 @@ public class StateMachineFactoryTest {
     }
 
     @Test
-    public void testStoryParse(){
+    public void testStoryParse() {
         storyParser.parse();
         assertThat("search_genre", IsIn.isIn(storyParser.getPaths().get("greet")));
         assertThat("search_genre", IsIn.isIn(storyParser.getPaths().get("search_crew")));
         assertThat("goodbye", IsIn.isIn(storyParser.getPaths().get("search_cast")));
         assertThat("", IsIn.isIn(storyParser.getPaths().get("goodbye")));
-    }
-
-    @Test
-    public void testFindSlot(){
-        utteranceParser.findSlot("I got some {genre} movies!");
-        assertThat(utteranceParser.getSlots(), IsMapContaining.hasKey("genre"));
-    }
-
-    @Test
-    public void testUtteranceParse(){
-        utteranceParser.parse();
-        assertThat(utteranceParser.getSlots(), IsMapContaining.hasKey("genre"));
-        assertThat(utteranceParser.getSlots(), IsMapContaining.hasKey("genre"));
-        assertThat(utteranceParser.getUtterances(), IsMapContaining.hasEntry("search_genre", "Here are some {genre} movies you would enjoy!"));
-        assertThat(utteranceParser.getUtterances(), IsMapContaining.hasEntry("search_crew", "I got some movies directed by {crew}."));
-
     }
 }
